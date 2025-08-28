@@ -6,12 +6,18 @@ services:
   github:
     repo: JuanGilles123/monifly-backend
     branch: main
-  run_command: |
-    php artisan migrate --force
-    php artisan serve --host=0.0.0.0 --port=$PORT
+  build_command: |
+    composer install --no-dev --prefer-dist --optimize-autoloader \
+    && php artisan optimize:clear \
+    && (npm ci --no-audit --no-fund || npm install --no-audit --no-fund) \
+    && npm run build
+  run_command: heroku-php-apache2 public/
   environment_slug: php
   instance_count: 1
   instance_size_slug: basic-xxs
+  buildpacks:
+  - heroku/php
+  - heroku/nodejs
   envs:
   - key: APP_NAME
     value: MoniFly
@@ -24,15 +30,15 @@ services:
   - key: DB_CONNECTION
     value: pgsql
   - key: DB_HOST
-    value: ${db.HOSTNAME}
+    value: ${monifly-db.HOSTNAME}
   - key: DB_PORT
-    value: ${db.PORT}
+    value: ${monifly-db.PORT}
   - key: DB_DATABASE
-    value: ${db.DATABASE}
+    value: ${monifly-db.DATABASE}
   - key: DB_USERNAME
-    value: ${db.USERNAME}
+    value: ${monifly-db.USERNAME}
   - key: DB_PASSWORD
-    value: ${db.PASSWORD}
+    value: ${monifly-db.PASSWORD}
   - key: SESSION_DRIVER
     value: cookie
   - key: CACHE_DRIVER
