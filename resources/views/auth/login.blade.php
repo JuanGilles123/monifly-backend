@@ -2,31 +2,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <!-- Google OAuth Button -->
-    <div class="mb-6">
-        <a href="{{ route('google.redirect') }}" 
-           class="w-full inline-flex items-center justify-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150">
-            <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24">
-                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-            </svg>
-            {{ __('Continue with Google') }}
-        </a>
-    </div>
-
-    <!-- Divider -->
-    <div class="relative mb-6">
-        <div class="absolute inset-0 flex items-center">
-            <div class="w-full border-t border-gray-300"></div>
-        </div>
-        <div class="relative flex justify-center text-sm">
-            <span class="px-2 bg-white text-gray-500">{{ __('Or continue with email') }}</span>
-        </div>
-    </div>
-
-    <form method="POST" action="{{ route('login') }}">
+    <form method="POST" action="{{ route('login') }}" class="space-y-0">
         @csrf
 
         <!-- Email Address -->
@@ -56,7 +32,7 @@
             </label>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
+    <div class="flex items-center justify-end mt-4">
             @if (Route::has('password.request'))
                 <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
                     {{ __('Forgot your password?') }}
@@ -66,6 +42,12 @@
             <x-primary-button class="ms-3">
                 {{ __('Log in') }}
             </x-primary-button>
+        </div>
+        <div class="mt-6">
+            <a href="{{ route('google.redirect') }}" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-white text-gray-900 font-medium border border-gray-300 hover:bg-gray-100 transition text-sm">
+                <svg width="16" height="16" viewBox="0 0 533.5 544.3"><path fill="#4285f4" d="M533.5 278.4c0-18.5-1.5-37.1-4.7-55.3H272.1v104.8h146.9c-6.2 33.8-25.6 63.6-54.4 82.7v68h87.7c51.3-47.2 81.2-116.7 81.2-200.2z"/><path fill="#34a853" d="M272.1 544.3c73.5 0 135.3-24.3 180.4-65.7l-87.7-68c-24.4 16.6-55.8 26-92.6 26-71 0-131.2-47.9-152.8-112.2H28.9v70.4c46.2 91.9 141.2 149.5 243.2 149.5z"/><path fill="#fbbc04" d="M119.3 324.4c-10.2-30.3-10.2-63.6 0-93.9V160.1H28.9c-38.6 76.7-38.6 167.5 0 244.2l90.4-69.9z"/><path fill="#ea4335" d="M272.1 107.7c38.9-.6 76.5 14 105 40.8l78.1-78.1C407.2 24.8 349.8.2 288.8 0 186.8 0 91.8 57.6 45.6 149.5l90.4 70.4c21.5-64.4 81.9-112.2 152.8-112.2z"/></svg>
+                <span>Iniciar con Google</span>
+            </a>
         </div>
     </form>
 </x-guest-layout>
