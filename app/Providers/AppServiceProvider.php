@@ -7,17 +7,15 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    public function register(): void
-    {
-        // Registrar servicios / bindings si se requieren
-    }
+	public function register(): void
+	{
+		// Registrar bindings / singletons aquí si se necesitan.
+	}
 
-    public function boot(): void
-    {
-        if (app()->environment('production')) {
-            URL::forceScheme('https');
-        }
-    }
+	public function boot(): void
+	{
+		if (app()->environment('production')) {
+			URL::forceScheme('https');
+		}
+	}
 }
-
-

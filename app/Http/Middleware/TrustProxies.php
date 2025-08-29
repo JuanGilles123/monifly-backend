@@ -7,14 +7,18 @@ use Illuminate\Http\Request;
 
 class TrustProxies extends Middleware
 {
-    // Confía en el proxy de DO/Cloudflare
-    protected $proxies = '*';
+	/**
+	 * Confiamos en cualquier proxy (DigitalOcean / Cloudflare). Ajustar si quieres lista específica.
+	 */
+	protected $proxies = '*';
 
-    // Usa los headers estándar (incluye X-Forwarded-Proto = https)
-    protected $headers =
-        Request::HEADER_X_FORWARDED_FOR |
-        Request::HEADER_X_FORWARDED_HOST |
-        Request::HEADER_X_FORWARDED_PORT |
-        Request::HEADER_X_FORWARDED_PROTO |
-        Request::HEADER_X_FORWARDED_AWS_ELB;
+	/**
+	 * Headers usados para detectar datos de proxy.
+	 */
+	protected $headers =
+		Request::HEADER_X_FORWARDED_FOR |
+		Request::HEADER_X_FORWARDED_HOST |
+		Request::HEADER_X_FORWARDED_PORT |
+		Request::HEADER_X_FORWARDED_PROTO |
+		Request::HEADER_X_FORWARDED_AWS_ELB;
 }

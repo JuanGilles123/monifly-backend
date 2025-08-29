@@ -4,55 +4,53 @@
     }
 @endphp
 <x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+<div class="min-h-[100dvh] overflow-y-auto bg-cover bg-center" style="background-image:url('/images/bg.jpg');">
+<div class="min-h-[100dvh] grid place-items-center p-4 pb-[env(safe-area-inset-bottom)]">
+<div class="w-full max-w-md backdrop-blur-xl bg-white/10 border border-white/15 rounded-2xl p-6">
+<h1 class="text-2xl font-bold text-center mb-1">MoniFly</h1>
+<p class="text-center text-white/60 mb-6">Inicia sesión</p>
 
-    <form method="POST" action="{{ route('login') }}" class="space-y-0">
-        @csrf
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+<a href="{{ route('google.redirect') }}" class="w-full inline-flex items-center justify-center gap-3 rounded-lg bg-white text-gray-900 hover:bg-gray-100 py-2.5">
+{{-- Logo Google SVG --}}
+<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42v-.1H24v7.2h11.3C33.7 31 29.4 34 24 34c-7 0-12.8-5.8-12.8-12.8S17 8.4 24 8.4c3.3 0 6.2 1.2 8.5 3.3l5-5C34.3 3.6 29.4 1.6 24 1.6 11.9 1.6 2 11.5 2 23.6S11.9 45.6 24 45.6 46 35.7 46 23.6c0-1-.1-2-.4-3.1z"/><path fill="#FF3D00" d="M6.3 14.7l5.9 4.3C13.4 15 18.3 12 24 12c3.3 0 6.2 1.2 8.5 3.3l5-5C34.3 3.6 29.4 1.6 24 1.6 15 1.6 7.7 6.6 4.3 14.7z"/><path fill="#4CAF50" d="M24 45.6c5.3 0 10.2-1.8 14-4.8l-6.5-5.3C29.4 37 26.8 38 24 38c-5.3 0-9.8-3.6-11.5-8.5l-6.3 4.9C9.8 41.6 16.3 45.6 24 45.6z"/><path fill="#1976D2" d="M43.6 20.5H42v-.1H24v7.2h11.3C33.7 31 29.4 34 24 34c-7 0-12.8-5.8-12.8-12.8S17 8.4 24 8.4c-9.5 0-18 7.7-21.4 18.4l6.3 4.9C9.8 41.6 16.3 45.6 24 45.6z"/></svg>
+Continuar con Google
+</a>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+<div class="my-4 flex items-center gap-2 text-white/40">
+<div class="h-px flex-1 bg-white/15"></div>
+<span>o con correo</span>
+<div class="h-px flex-1 bg-white/15"></div>
+</div>
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+<form method="POST" action="{{ route('login') }}" x-data="{busy:false}" @submit="busy=true">
+@csrf
+<div class="space-y-3">
+<div>
+<x-input-label for="email" value="Correo" />
+<x-text-input id="email" name="email" type="email" class="mt-1 block w-full" required autofocus autocomplete="username" />
+<x-input-error :messages="$errors->get('email')" class="mt-2" />
+</div>
+<div>
+<x-input-label for="password" value="Contraseña" />
+<x-text-input id="password" name="password" type="password" class="mt-1 block w-full" required autocomplete="current-password" />
+</div>
+</div>
+<div class="mt-4 flex items-center justify-between text-sm">
+<label class="inline-flex items-center gap-2"><input type="checkbox" name="remember" class="rounded bg-white/10 border-white/20"> Recordarme</label>
+<a href="{{ route('password.request') }}" class="text-indigo-300 hover:text-indigo-200">¿Olvidaste tu contraseña?</a>
+</div>
+<button :disabled="busy" class="mt-4 w-full inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-sky-500 to-emerald-500 text-white py-2.5 disabled:opacity-50">
+<svg x-show="busy" class="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/></svg>
+<span x-text="busy ? 'Ingresando…' : 'Ingresar'"></span>
+</button>
+</form>
 
-    <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-        <div class="mt-6">
-            <a href="{{ route('google.redirect') }}" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-white text-gray-900 font-medium border border-gray-300 hover:bg-gray-100 transition text-sm">
-                <svg width="16" height="16" viewBox="0 0 533.5 544.3"><path fill="#4285f4" d="M533.5 278.4c0-18.5-1.5-37.1-4.7-55.3H272.1v104.8h146.9c-6.2 33.8-25.6 63.6-54.4 82.7v68h87.7c51.3-47.2 81.2-116.7 81.2-200.2z"/><path fill="#34a853" d="M272.1 544.3c73.5 0 135.3-24.3 180.4-65.7l-87.7-68c-24.4 16.6-55.8 26-92.6 26-71 0-131.2-47.9-152.8-112.2H28.9v70.4c46.2 91.9 141.2 149.5 243.2 149.5z"/><path fill="#fbbc04" d="M119.3 324.4c-10.2-30.3-10.2-63.6 0-93.9V160.1H28.9c-38.6 76.7-38.6 167.5 0 244.2l90.4-69.9z"/><path fill="#ea4335" d="M272.1 107.7c38.9-.6 76.5 14 105 40.8l78.1-78.1C407.2 24.8 349.8.2 288.8 0 186.8 0 91.8 57.6 45.6 149.5l90.4 70.4c21.5-64.4 81.9-112.2 152.8-112.2z"/></svg>
-                <span>Iniciar con Google</span>
-            </a>
-        </div>
-    </form>
+<p class="mt-4 text-center text-sm">¿No tienes cuenta? <a href="{{ route('register') }}" class="text-indigo-300 hover:text-indigo-200">Crea una</a></p>
+</div>
+</div>
+</div>
 </x-guest-layout>
