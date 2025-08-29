@@ -1,21 +1,17 @@
-@php
-    if(auth()->check()) {
-        header('Location: '.route('dashboard')); exit; // redirect early if already authenticated
-    }
-@endphp
 <x-guest-layout>
-<div class="min-h-[100dvh] overflow-y-auto bg-cover bg-center" style="background-image:url('/images/bg.jpg');">
+<div class="min-h-[100dvh] overflow-y-auto bg-cover bg-center" style="background-image:url('/images/bg.jpg'),linear-gradient(135deg,#0f172a,#0d2622);">
 <div class="min-h-[100dvh] grid place-items-center p-4 pb-[env(safe-area-inset-bottom)]">
 <div class="w-full max-w-md backdrop-blur-xl bg-white/10 border border-white/15 rounded-2xl p-6">
 <h1 class="text-2xl font-bold text-center mb-1">MoniFly</h1>
 <p class="text-center text-white/60 mb-6">Inicia sesión</p>
 
 
-<a href="{{ route('google.redirect') }}" class="w-full inline-flex items-center justify-center gap-3 rounded-lg bg-white text-gray-900 hover:bg-gray-100 py-2.5">
-{{-- Logo Google SVG --}}
-<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42v-.1H24v7.2h11.3C33.7 31 29.4 34 24 34c-7 0-12.8-5.8-12.8-12.8S17 8.4 24 8.4c3.3 0 6.2 1.2 8.5 3.3l5-5C34.3 3.6 29.4 1.6 24 1.6 11.9 1.6 2 11.5 2 23.6S11.9 45.6 24 45.6 46 35.7 46 23.6c0-1-.1-2-.4-3.1z"/><path fill="#FF3D00" d="M6.3 14.7l5.9 4.3C13.4 15 18.3 12 24 12c3.3 0 6.2 1.2 8.5 3.3l5-5C34.3 3.6 29.4 1.6 24 1.6 15 1.6 7.7 6.6 4.3 14.7z"/><path fill="#4CAF50" d="M24 45.6c5.3 0 10.2-1.8 14-4.8l-6.5-5.3C29.4 37 26.8 38 24 38c-5.3 0-9.8-3.6-11.5-8.5l-6.3 4.9C9.8 41.6 16.3 45.6 24 45.6z"/><path fill="#1976D2" d="M43.6 20.5H42v-.1H24v7.2h11.3C33.7 31 29.4 34 24 34c-7 0-12.8-5.8-12.8-12.8S17 8.4 24 8.4c-9.5 0-18 7.7-21.4 18.4l6.3 4.9C9.8 41.6 16.3 45.6 24 45.6z"/></svg>
-Continuar con Google
-</a>
+<div class="mb-4">
+    <a href="{{ route('google.redirect') }}" class="w-full inline-flex items-center justify-center gap-3 rounded-lg bg-white text-gray-900 hover:bg-gray-100 py-2.5">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42v-.1H24v7.2h11.3C33.7 31 29.4 34 24 34c-7 0-12.8-5.8-12.8-12.8S17 8.4 24 8.4c3.3 0 6.2 1.2 8.5 3.3l5-5C34.3 3.6 29.4 1.6 24 1.6 11.9 1.6 2 11.5 2 23.6S11.9 45.6 24 45.6 46 35.7 46 23.6c0-1-.1-2-.4-3.1z"/><path fill="#FF3D00" d="M6.3 14.7l5.9 4.3C13.4 15 18.3 12 24 12c3.3 0 6.2 1.2 8.5 3.3l5-5C34.3 3.6 29.4 1.6 24 1.6 15 1.6 7.7 6.6 4.3 14.7z"/><path fill="#4CAF50" d="M24 45.6c5.3 0 10.2-1.8 14-4.8l-6.5-5.3C29.4 37 26.8 38 24 38c-5.3 0-9.8-3.6-11.5-8.5l-6.3 4.9C9.8 41.6 16.3 45.6 24 45.6z"/><path fill="#1976D2" d="M43.6 20.5H42v-.1H24v7.2h11.3C33.7 31 29.4 34 24 34c-7 0-12.8-5.8-12.8-12.8S17 8.4 24 8.4c-9.5 0-18 7.7-21.4 18.4l6.3 4.9C9.8 41.6 16.3 45.6 24 45.6z"/></svg>
+        <span>Continuar con Google</span>
+    </a>
+</div>
 
 
 <div class="my-4 flex items-center gap-2 text-white/40">

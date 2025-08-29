@@ -38,8 +38,7 @@ class GoogleController extends Controller
             $existingUser = User::where('email', $googleUser->getEmail())->first();
             
             if ($existingUser) {
-                // Login existing user
-                Auth::login($existingUser);
+                Auth::login($existingUser, remember: true);
             } else {
                 // Create new user with basic required fields only
                 $user = User::create([
@@ -49,11 +48,11 @@ class GoogleController extends Controller
                     'email_verified_at' => now(),
                 ]);
                 
-                Auth::login($user);
+                Auth::login($user, remember: true);
             }
-            
-            // Force redirect to dashboard
-            return redirect('/dashboard');
+            // Regenerar sesión para evitar fijación y asegurar persistencia
+            session()->regenerate();
+            return redirect()->intended('/dashboard');
             
         } catch (\Exception $e) {
             // Log the actual error and redirect with message

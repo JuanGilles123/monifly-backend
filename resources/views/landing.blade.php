@@ -1,6 +1,6 @@
 <x-guest-layout>
 <div class="min-h-[100dvh] overflow-y-auto bg-cover bg-center"
-style="background-image:url('/images/bg.jpg');"
+	style="background-image:url('/images/bg.jpg'),linear-gradient(135deg,#0f172a,#0d2622);"
 >
 <div class="min-h-[100dvh] md:min-h-screen grid place-items-center p-4 pb-[env(safe-area-inset-bottom)]">
 <div class="w-full max-w-md backdrop-blur-xl bg-white/10 border border-white/15 shadow-2xl rounded-2xl p-6">
