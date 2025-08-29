@@ -1,7 +1,7 @@
 <x-guest-layout>
     <!-- Google OAuth Button -->
     <div class="mb-6">
-        <a href="{{ url('/auth/google/redirect') }}" 
+        <a href="{{ route('google.redirect') }}" 
            class="w-full inline-flex items-center justify-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150">
             <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -61,6 +61,72 @@
                             name="password_confirmation" required autocomplete="new-password" />
 
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+        </div>
+
+        <!-- Country -->
+        <div class="mt-4">
+            <x-input-label for="country" :value="__('Country')" />
+            <select id="country" name="country" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
+                <option value="">{{ __('Select your country') }}</option>
+                <option value="US" {{ old('country') == 'US' ? 'selected' : '' }}>🇺🇸 United States</option>
+                <option value="CA" {{ old('country') == 'CA' ? 'selected' : '' }}>🇨🇦 Canada</option>
+                <option value="MX" {{ old('country') == 'MX' ? 'selected' : '' }}>🇲🇽 México</option>
+                <option value="CO" {{ old('country') == 'CO' ? 'selected' : '' }}>🇨🇴 Colombia</option>
+                <option value="AR" {{ old('country') == 'AR' ? 'selected' : '' }}>🇦🇷 Argentina</option>
+                <option value="BR" {{ old('country') == 'BR' ? 'selected' : '' }}>🇧🇷 Brasil</option>
+                <option value="CL" {{ old('country') == 'CL' ? 'selected' : '' }}>🇨🇱 Chile</option>
+                <option value="PE" {{ old('country') == 'PE' ? 'selected' : '' }}>🇵🇪 Perú</option>
+                <option value="EC" {{ old('country') == 'EC' ? 'selected' : '' }}>🇪🇨 Ecuador</option>
+                <option value="ES" {{ old('country') == 'ES' ? 'selected' : '' }}>🇪🇸 España</option>
+                <option value="GB" {{ old('country') == 'GB' ? 'selected' : '' }}>🇬🇧 United Kingdom</option>
+                <option value="FR" {{ old('country') == 'FR' ? 'selected' : '' }}>🇫🇷 France</option>
+                <option value="DE" {{ old('country') == 'DE' ? 'selected' : '' }}>🇩🇪 Germany</option>
+            </select>
+            <x-input-error :messages="$errors->get('country')" class="mt-2" />
+        </div>
+
+        <!-- Currency -->
+        <div class="mt-4">
+            <x-input-label for="currency" :value="__('Preferred Currency')" />
+            <select id="currency" name="currency" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
+                <option value="">{{ __('Select currency') }}</option>
+                <option value="USD" {{ old('currency') == 'USD' ? 'selected' : '' }}>💵 USD - US Dollar</option>
+                <option value="EUR" {{ old('currency') == 'EUR' ? 'selected' : '' }}>💶 EUR - Euro</option>
+                <option value="CAD" {{ old('currency') == 'CAD' ? 'selected' : '' }}>🍁 CAD - Canadian Dollar</option>
+                <option value="MXN" {{ old('currency') == 'MXN' ? 'selected' : '' }}>🇲🇽 MXN - Mexican Peso</option>
+                <option value="COP" {{ old('currency') == 'COP' ? 'selected' : '' }}>🇨🇴 COP - Colombian Peso</option>
+                <option value="ARS" {{ old('currency') == 'ARS' ? 'selected' : '' }}>🇦🇷 ARS - Argentine Peso</option>
+                <option value="BRL" {{ old('currency') == 'BRL' ? 'selected' : '' }}>🇧🇷 BRL - Brazilian Real</option>
+                <option value="CLP" {{ old('currency') == 'CLP' ? 'selected' : '' }}>🇨🇱 CLP - Chilean Peso</option>
+                <option value="PEN" {{ old('currency') == 'PEN' ? 'selected' : '' }}>🇵🇪 PEN - Peruvian Sol</option>
+                <option value="GBP" {{ old('currency') == 'GBP' ? 'selected' : '' }}>💷 GBP - British Pound</option>
+            </select>
+            <x-input-error :messages="$errors->get('currency')" class="mt-2" />
+        </div>
+
+        <!-- Optional First Goal -->
+        <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+            <h3 class="text-sm font-medium text-gray-700 mb-3">{{ __('🎯 Set your first financial goal (optional)') }}</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <x-input-label for="goal_name" :value="__('Goal Name')" />
+                    <x-text-input id="goal_name" class="block mt-1 w-full" type="text" name="goal_name" 
+                                  :value="old('goal_name')" placeholder="e.g., Emergency Fund" />
+                    <x-input-error :messages="$errors->get('goal_name')" class="mt-2" />
+                </div>
+
+                <div>
+                    <x-input-label for="goal_target" :value="__('Target Amount')" />
+                    <x-text-input id="goal_target" class="block mt-1 w-full" type="number" name="goal_target" 
+                                  :value="old('goal_target')" step="0.01" min="0" placeholder="1000.00" />
+                    <x-input-error :messages="$errors->get('goal_target')" class="mt-2" />
+                </div>
+            </div>
+
+            <p class="text-xs text-gray-500 mt-2">
+                {{ __('Setting a goal helps you track your financial progress from day one!') }}
+            </p>
         </div>
 
         <div class="flex items-center justify-end mt-4">
