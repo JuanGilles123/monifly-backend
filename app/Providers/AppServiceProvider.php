@@ -2,27 +2,22 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
-        //
+        // Registrar servicios / bindings si se requieren
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
-        // Forzar HTTPS y confiar en proxies en producción (DigitalOcean App Platform)
         if (app()->environment('production')) {
             URL::forceScheme('https');
         }
     }
 }
+
+
