@@ -26,65 +26,34 @@ class GoogleController extends Controller
     public function callback()
     {
         try {
-            $googleUser = Socialite::driver('google')->user();
+            // Obtener usuario de Google (stateless para evitar problemas de "Invalid state")
+            $googleUser = Socialite::driver('google')->stateless()->user();
             
-            Log::info('Google OAuth callback received', [
-                'email' => $googleUser->getEmail(),
-                'name' => $googleUser->getName(),
-                'google_id' => $googleUser->getId()
-            ]);
-            
-            // Check if user already exists by email or google_id
-            $existingUser = User::where('email', $googleUser->getEmail())
-                              ->orWhere('google_id', $googleUser->getId())
-                              ->first();
+            // Check if user exists by email
+            $existingUser = User::where('email', $googleUser->getEmail())->first();
             
             if ($existingUser) {
-                // Update Google ID if not set
-                if (!$existingUser->google_id) {
-                    $existingUser->update([
-                        'google_id' => $googleUser->getId(),
-                        'avatar' => $googleUser->getAvatar(),
-                    ]);
-                }
-                
+                // Login existing user
                 Auth::login($existingUser);
-                Log::info('Existing user logged in via Google', ['user_id' => $existingUser->id]);
             } else {
-                // Create new user with only required fields first
-                $userData = [
+                // Create new user with basic required fields only
+                $user = User::create([
                     'name' => $googleUser->getName(),
                     'email' => $googleUser->getEmail(),
-                    'password' => Hash::make(uniqid()), // Random password
-                    'email_verified_at' => now(), // Auto-verify Google users
-                ];
-                
-                // Add Google fields only if columns exist
-                try {
-                    $userData['google_id'] = $googleUser->getId();
-                    $userData['avatar'] = $googleUser->getAvatar();
-                    $userData['currency'] = 'USD';
-                } catch (\Exception $e) {
-                    Log::warning('Google fields not available, using basic user creation', ['error' => $e->getMessage()]);
-                }
-                
-                $user = User::create($userData);
+                    'password' => Hash::make(uniqid()),
+                    'email_verified_at' => now(),
+                ]);
                 
                 Auth::login($user);
-                Log::info('New user created and logged in via Google', ['user_id' => $user->id]);
             }
             
-            return redirect()->route('dashboard');
+            // Force redirect to dashboard
+            return redirect('/dashboard');
             
         } catch (\Exception $e) {
-            Log::error('Google OAuth callback error', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-                'line' => $e->getLine(),
-                'file' => $e->getFile()
-            ]);
-            
-            return redirect('/login')->with('error', 'Unable to login with Google: ' . $e->getMessage());
+            // Log the actual error and redirect with message
+            \Log::error('Google OAuth Error: ' . $e->getMessage());
+            return redirect('/login')->withErrors(['email' => 'Error al iniciar sesión con Google. Por favor intenta de nuevo.']);
         }
     }
 }
