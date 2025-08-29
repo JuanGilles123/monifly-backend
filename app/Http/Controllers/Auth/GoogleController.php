@@ -28,6 +28,11 @@ class GoogleController extends Controller
         try {
             // Obtener usuario de Google (stateless para evitar problemas de "Invalid state")
             $googleUser = Socialite::driver('google')->stateless()->user();
+
+            // Si ya hay sesión activa, ir directo
+            if (auth()->check()) {
+                return redirect('/dashboard');
+            }
             
             // Check if user exists by email
             $existingUser = User::where('email', $googleUser->getEmail())->first();
@@ -52,8 +57,12 @@ class GoogleController extends Controller
             
         } catch (\Exception $e) {
             // Log the actual error and redirect with message
-            \Log::error('Google OAuth Error: ' . $e->getMessage());
-            return redirect('/login')->withErrors(['email' => 'Error al iniciar sesión con Google. Por favor intenta de nuevo.']);
+            \Log::error('Google OAuth Error: ' . $e->getMessage(), [
+                'exception' => get_class($e),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);
+            return redirect('/login')->withErrors(['google' => 'Error con Google: '.$e->getMessage()]);
         }
     }
 }

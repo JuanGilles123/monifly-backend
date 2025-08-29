@@ -126,6 +126,11 @@
                                                     </div>
                                                     @endguest
                                                     <p class="fade-in delay-3 mt-10 text-xs text-neutral-500">&copy; {{ date('Y') }} {{ config('app.name') }}. Todos los derechos reservados.</p>
+                                                    @if($errors->any())
+                                                        <div class="mt-6 text-sm text-red-400">
+                                                            {{ implode(', ', $errors->all()) }}
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             </main>
                                         </body>
