@@ -26,12 +26,12 @@
 <div class="space-y-3">
 <div>
 <x-input-label for="email" value="Correo" />
-<x-text-input id="email" name="email" type="email" class="mt-1 block w-full" required autofocus autocomplete="username" />
+<x-text-input id="email" name="email" type="email" class="mt-1" :value="old('email')" required autofocus autocomplete="username" placeholder="tu@correo.com" />
 <x-input-error :messages="$errors->get('email')" class="mt-2" />
 </div>
 <div>
 <x-input-label for="password" value="Contraseña" />
-<x-text-input id="password" name="password" type="password" class="mt-1 block w-full" required autocomplete="current-password" />
+<x-text-input id="password" name="password" type="password" class="mt-1" required autocomplete="current-password" placeholder="••••••••" />
 </div>
 </div>
 <div class="mt-4 flex items-center justify-between text-sm">

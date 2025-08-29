@@ -21,3 +21,13 @@ Route::get('/auth/google/redirect', [GoogleController::class, 'redirect'])->name
 Route::get('/auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
 
 require __DIR__.'/auth.php';
+
+// Ruta temporal de depuración de sesión (eliminar luego)
+Route::get('/debug/session', function() { 
+	return [
+		'auth' => auth()->check(),
+		'user_id' => auth()->id(),
+		'session_id' => session()->getId(),
+		'cookies' => request()->cookies->all(),
+	];
+})->middleware('web');
