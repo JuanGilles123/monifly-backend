@@ -1,11 +1,229 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🚀 MoniFly Backend
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**MoniFly** is a comprehensive financial management backend built with Laravel, featuring advanced authentication, financial goal tracking, and modern UI components.
+
+## ✨ Features
+
+### 🔐 Authentication & Security
+- ✅ **Email Verification** - Required for protected routes
+- ✅ **Google OAuth Integration** - Seamless social login with account linking
+- ✅ **Traditional Authentication** - Laravel Breeze implementation
+- ✅ **Password Reset** - Complete recovery flow
+
+### 🎯 Financial Management
+- ✅ **Goal Tracking System** - Create and monitor financial objectives
+- ✅ **Progress Visualization** - Real-time progress bars and statistics
+- ✅ **Multi-Currency Support** - International currency handling
+- ✅ **Cent-based Storage** - Precise financial calculations
+
+### 🌟 Enhanced Registration
+- ✅ **Extended User Profiles** - Country, preferred currency, and more
+- ✅ **Initial Goal Creation** - Set financial targets during registration
+- ✅ **Smart Validation** - Comprehensive form validation
+- ✅ **Modern UI** - Tailwind CSS with country/currency selectors
+
+### 📊 Dashboard & Analytics
+- ✅ **Financial Statistics** - Total goals, completed goals, progress amounts
+- ✅ **User Profile Integration** - Avatar, verification status, OAuth info
+- ✅ **Responsive Design** - Mobile-friendly interface
+- ✅ **Real-time Data** - Live updates from PostgreSQL database
+
+## 🛠️ Technology Stack
+
+- **Backend**: Laravel 11.x
+- **Database**: PostgreSQL (DigitalOcean)
+- **Authentication**: Laravel Breeze + Socialite
+- **Frontend**: Blade Templates + Tailwind CSS
+- **Email**: Laravel Mail (configurable)
+- **Cache**: Database cache driver
+
+## 🗄️ Database Schema
+
+### Users Table
+```sql
+- id, name, email, email_verified_at, password
+- country (ISO 2-char), currency_preferred (ISO 3-char)
+- provider, provider_id, google_id, avatar_url
+- phone, birth_date, gender
+- timezone, language, monthly_income
+- financial_goals, notifications_enabled
+- profile_completed, last_active_at
+- timestamps
+```
+
+### Goals Table
+```sql
+- id, user_id (FK), name
+- target_cents, progress_cents, currency
+- target_date, timestamps
+```
+
+## 🚀 Quick Start
+
+### Prerequisites
+- PHP 8.2+ with PostgreSQL extension
+- Composer
+- Node.js & npm
+- PostgreSQL database
+
+### Installation
+
+1. **Clone the repository**
+```bash
+git clone https://github.com/JuanGilles123/monifly-backend.git
+cd monifly-backend
+```
+
+2. **Install dependencies**
+```bash
+composer install
+npm install && npm run build
+```
+
+3. **Environment setup**
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+4. **Configure environment variables**
+```env
+# Database (PostgreSQL)
+DB_CONNECTION=pgsql
+DB_HOST=your-postgres-host
+DB_PORT=25060
+DB_DATABASE=your-database
+DB_USERNAME=your-username
+DB_PASSWORD=your-password
+DB_SSLMODE=require
+
+# Google OAuth
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+GOOGLE_REDIRECT_URI=${APP_URL}/auth/google/callback
+```
+
+5. **Run migrations**
+```bash
+php artisan migrate
+```
+
+6. **Start the server**
+```bash
+php artisan serve
+```
+
+## 🔧 Configuration
+
+### Google OAuth Setup
+1. Create a Google Cloud Project
+2. Enable Google+ API
+3. Create OAuth 2.0 credentials
+4. Add your domain to authorized URLs
+5. Configure callback: `https://yourdomain.com/auth/google/callback`
+
+### DigitalOcean Deployment
+The app is ready for DigitalOcean App Platform deployment:
+- ✅ Dockerfile included
+- ✅ Environment variables configured
+- ✅ PostgreSQL database integration
+- ✅ Static asset building
+
+## 📱 API Endpoints
+
+### Authentication
+- `GET /` - Welcome page
+- `GET /register` - Registration form
+- `POST /register` - User registration
+- `GET /login` - Login form  
+- `POST /login` - User authentication
+- `GET /auth/google/redirect` - Google OAuth redirect
+- `GET /auth/google/callback` - Google OAuth callback
+
+### Protected Routes (requires `auth` + `verified`)
+- `GET /dashboard` - User dashboard with statistics
+- `GET /profile` - User profile management
+- Additional routes can be added to the `verified` middleware group
+
+## 🧪 Testing
+
+### Manual Testing Checklist
+- [ ] User registration with all fields
+- [ ] Email verification flow
+- [ ] Google OAuth login/registration
+- [ ] Dashboard statistics accuracy
+- [ ] Financial goal creation
+- [ ] Multi-currency support
+- [ ] Mobile responsiveness
+
+### Database Testing
+```bash
+php artisan tinker
+
+# Check user count
+App\Models\User::count()
+
+# Check goals with users
+App\Models\Goal::with('user')->get()
+
+# Verify user relationships
+App\Models\User::with('goals')->first()
+```
+
+## 🔒 Security Features
+
+- ✅ **CSRF Protection** - All forms protected
+- ✅ **SQL Injection Prevention** - Eloquent ORM
+- ✅ **Password Hashing** - bcrypt encryption
+- ✅ **Email Verification** - Mandatory verification
+- ✅ **OAuth Security** - Stateless implementation
+- ✅ **Input Validation** - Comprehensive form validation
+
+## 🌍 Internationalization
+
+Currently supports:
+- **Countries**: US, CA, MX, CO, AR, BR, CL, PE, EC, ES, GB, FR, DE
+- **Currencies**: USD, EUR, CAD, MXN, COP, ARS, BRL, CLP, PEN, GBP
+- Easy to extend with additional countries/currencies
+
+## 📈 Performance Features
+
+- ✅ **Cent-based Math** - Precise financial calculations
+- ✅ **Database Indexing** - Optimized queries
+- ✅ **Eager Loading** - Relationship optimization
+- ✅ **Asset Compilation** - Vite build system
+- ✅ **Caching** - Database cache driver
+
+## 🚧 Future Enhancements
+
+- [ ] **Transaction Management** - Income/expense tracking
+- [ ] **Budget Categories** - Spending categorization
+- [ ] **Financial Reports** - Charts and analytics
+- [ ] **Notification System** - Email/push notifications
+- [ ] **Mobile API** - RESTful API for mobile apps
+- [ ] **Social Features** - Goal sharing and challenges
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## 📄 License
+
+This project is open-sourced software licensed under the [MIT license](LICENSE).
+
+## 🔗 Links
+
+- **Repository**: https://github.com/JuanGilles123/monifly-backend
+- **Live Demo**: Coming soon on DigitalOcean
+- **Documentation**: This README
+
+---
+
+**Built with ❤️ by Juan José** for the MoniFly financial management platform.
 
 ## About Laravel
 
