@@ -8,6 +8,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Debug route - remove in production
+Route::get('/debug/env', function () {
+    if (!app()->environment('production')) {
+        return response()->json([
+            'APP_ENV' => env('APP_ENV'),
+            'GOOGLE_CLIENT_ID_SET' => !empty(env('GOOGLE_CLIENT_ID')),
+            'GOOGLE_CLIENT_SECRET_SET' => !empty(env('GOOGLE_CLIENT_SECRET')),
+            'GOOGLE_REDIRECT_URI' => env('GOOGLE_REDIRECT_URI'),
+        ]);
+    }
+    return abort(404);
+});
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

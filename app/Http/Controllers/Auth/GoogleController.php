@@ -51,17 +51,24 @@ class GoogleController extends Controller
                 Auth::login($existingUser);
                 Log::info('Existing user logged in via Google', ['user_id' => $existingUser->id]);
             } else {
-                // Create new user
-                $user = User::create([
+                // Create new user with only required fields first
+                $userData = [
                     'name' => $googleUser->getName(),
                     'email' => $googleUser->getEmail(),
                     'password' => Hash::make(uniqid()), // Random password
-                    'google_id' => $googleUser->getId(),
-                    'avatar' => $googleUser->getAvatar(),
-                    'country' => null,
-                    'currency' => 'USD',
                     'email_verified_at' => now(), // Auto-verify Google users
-                ]);
+                ];
+                
+                // Add Google fields only if columns exist
+                try {
+                    $userData['google_id'] = $googleUser->getId();
+                    $userData['avatar'] = $googleUser->getAvatar();
+                    $userData['currency'] = 'USD';
+                } catch (\Exception $e) {
+                    Log::warning('Google fields not available, using basic user creation', ['error' => $e->getMessage()]);
+                }
+                
+                $user = User::create($userData);
                 
                 Auth::login($user);
                 Log::info('New user created and logged in via Google', ['user_id' => $user->id]);
@@ -72,7 +79,9 @@ class GoogleController extends Controller
         } catch (\Exception $e) {
             Log::error('Google OAuth callback error', [
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile()
             ]);
             
             return redirect('/login')->with('error', 'Unable to login with Google: ' . $e->getMessage());
