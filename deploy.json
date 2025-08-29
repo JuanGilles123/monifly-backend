@@ -1,0 +1,26 @@
+{
+  "name": "monifly",
+  "version": "1.0.0",
+  "description": "MoniFly - Personal Finance Management App",
+  "main": "public/index.php",
+  "scripts": {
+    "postinstall": [
+      "composer install --no-dev --optimize-autoloader",
+      "php artisan config:cache",
+      "php artisan route:cache",
+      "php artisan view:cache",
+      "npm install --production",
+      "npm run build"
+    ],
+    "migrate": "php artisan migrate --force",
+    "seed": "php artisan db:seed --force"
+  },
+  "engines": {
+    "php": ">=8.2",
+    "node": ">=18"
+  },
+  "buildpacks": [
+    "heroku/php",
+    "heroku/nodejs"
+  ]
+}

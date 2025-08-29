@@ -12,11 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // Add new profile fields
-            $table->string('country', 2)->nullable()->after('email'); // ISO country code
-            $table->string('currency_preferred', 3)->default('USD')->after('country'); // ISO currency code
-            $table->string('google_id')->nullable()->after('provider_id'); // Specific Google ID
-            $table->string('avatar_url')->nullable()->after('avatar'); // Avatar URL
+            //
         });
     }
 
@@ -26,12 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn([
-                'country',
-                'currency_preferred', 
-                'google_id',
-                'avatar_url'
-            ]);
+            //
         });
     }
 };

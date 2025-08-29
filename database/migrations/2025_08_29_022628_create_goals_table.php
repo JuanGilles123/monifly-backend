@@ -13,12 +13,6 @@ return new class extends Migration
     {
         Schema::create('goals', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('name');
-            $table->unsignedBigInteger('target_cents')->default(0);
-            $table->unsignedBigInteger('progress_cents')->default(0);
-            $table->string('currency', 3)->default('USD');
-            $table->date('target_date')->nullable();
             $table->timestamps();
         });
     }
